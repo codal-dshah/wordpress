@@ -1,0 +1,78 @@
+name: Code Quality Check
+
+
+on:
+  push:
+    branches:
+      - 'ci-cd'  # Run on ci-cd branch
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+
+      - name: Install Stylelint and Configuration
+        run: |
+          npm install -g stylelint stylelint-config-standard
+
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+
+      - name: Install PHPCS
+        run: |
+          composer global require squizlabs/php_codesniffer
+          export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+
+      - name: Allow plugins for PHPCS installer
+        run: |
+          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+
+
+      - name: Install WordPress VIP Coding Standard
+        run: |
+          composer global require automattic/vipwpcs
+          export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+
+      - name: Remove extra spaces and lines
+        run: |
+          find wordpress/wp-content/ -type f -name '*.php' -exec sed -i 's/[[:space:]]\+$//' {} +
+          find wordpress/wp-content/ -type f -name '*.php' -exec sed -i '/^$/d' {} +
+
+
+      - name: PHP linting with WordPress VIP standard
+        working-directory: wordpress/wp-content/themes/
+        run: |
+          phpcs --ignore=*/vendor/* --standard=WordPress-VIP-Go .
+
+
+      - name: HTML linting
+        working-directory: wordpress/wp-content/themes/
+        run: |
+          npm install htmlhint --save-dev
+          npx htmlhint '**/*.html' --ignore="doctype-first"
+
+
+      - name: CSS linting with Stylelint
+        working-directory: wordpress/wp-content/themes/
+        run: |
+            npm install stylelint stylelint-config-standard stylelint-declaration-block-no-ignored-properties stylelint-no-unsupported-browser-features --save-dev
+            npx stylelint '**/*.css'
+
+
+      - name: JavaScript linting
+        working-directory: wordpress/wp-content/themes/
+        run: |
+          npm install jshint --save-dev
+          find . -type f -name '*.js' -exec npx jshint {} \;
