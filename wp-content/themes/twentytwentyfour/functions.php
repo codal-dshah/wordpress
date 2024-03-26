@@ -7,11 +7,9 @@
  * @package Twenty Twenty-Four
  * @since Twenty Twenty-Four 1.0
  */
-
 /**
  * Register block styles.
  */
-
 if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 	/**
 	 * Register custom block styles
@@ -20,7 +18,6 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 	 * @return void
 	 */
 	function twentytwentyfour_block_styles() {
-
 		register_block_style(
 			'core/details',
 			array(
@@ -143,13 +140,10 @@ if ( ! function_exists( 'twentytwentyfour_block_styles' ) ) :
 		);
 	}
 endif;
-
 add_action( 'init', 'twentytwentyfour_block_styles' );
-
 /**
  * Enqueue block stylesheets.
  */
-
 if ( ! function_exists( 'twentytwentyfour_block_stylesheets' ) ) :
 	/**
 	 * Enqueue custom block stylesheets
@@ -177,13 +171,10 @@ if ( ! function_exists( 'twentytwentyfour_block_stylesheets' ) ) :
 		);
 	}
 endif;
-
 add_action( 'init', 'twentytwentyfour_block_stylesheets' );
-
 /**
  * Register pattern categories.
  */
-
 if ( ! function_exists( 'twentytwentyfour_pattern_categories' ) ) :
 	/**
 	 * Register pattern categories
@@ -192,7 +183,6 @@ if ( ! function_exists( 'twentytwentyfour_pattern_categories' ) ) :
 	 * @return void
 	 */
 	function twentytwentyfour_pattern_categories() {
-
 		register_block_pattern_category(
 			'page',
 			array(
@@ -202,8 +192,4 @@ if ( ! function_exists( 'twentytwentyfour_pattern_categories' ) ) :
 		);
 	}
 endif;
-
 add_action( 'init', 'twentytwentyfour_pattern_categories' );
-
-
-
